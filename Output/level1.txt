@@ -1,0 +1,6 @@
+|- - -| RH |- - - -|
+| N |_ RH _| N N |
+| N N N N N N |
+BV N N N N N N LV
+| N N N N N N |
+|_ - - - - - - _|
