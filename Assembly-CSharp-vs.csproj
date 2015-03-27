@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\DisplayScript.cs" />
      <Compile Include="Assets\Levels\Levels.cs" />
+     <Compile Include="Assets\Scripts\CircuitComponent.cs" />
      <Compile Include="Assets\Scripts\Common.cs" />
      <Compile Include="Assets\Scripts\HighLight.cs" />
      <Compile Include="Assets\Scripts\LoadLevel.cs" />
@@ -55,6 +56,7 @@
      <Compile Include="Assets\Scripts\Pile.cs" />
      <Compile Include="Assets\Scripts\ShowInfo.cs" />
      <Compile Include="Assets\Scripts\Symbol.cs" />
+     <Compile Include="Assets\Scripts\Terminal.cs" />
      <Compile Include="Assets\Scripts\TextColorChange.cs" />
      <None Include="Assets\level1.txt" />
  <Reference Include="UnityEngine.UI">

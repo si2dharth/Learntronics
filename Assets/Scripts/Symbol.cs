@@ -10,6 +10,9 @@ public class Symbol : MonoBehaviour {
             return new Vector2(-0.5f,-0.5f);
         else if (angle % anglePrecision == 0)
         {
+            if (angle != 0) Pile.invert = true;
+            Pile.terminal1 = (transform.FindChild("Terminals/Terminal1").GetComponent("Terminal") as Terminal);
+            Pile.terminal2 = (transform.FindChild("Terminals/Terminal2").GetComponent("Terminal") as Terminal);
             renderer.enabled = false;
             return transform.position;
         }

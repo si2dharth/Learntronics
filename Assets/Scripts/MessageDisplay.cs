@@ -30,11 +30,11 @@ public class MessageDisplay : MonoBehaviour {
         rotateBoxAnim = rotateBox.GetComponent("Animator") as Animator;
         rotateSymbol = RotateSymbol;
         levelInfo = LevelInfoPanel;
-        levelMoral = LevelMoralPanel;
-        levelInfoText = GameObject.Find("LevelInfo Text").GetComponent("Text") as Text;
-        levelMoralText = GameObject.Find("LevelMoral Text").GetComponent("Text") as Text;
-        levelInfoBtn = GameObject.Find("LevelInfo Next Button").GetComponent("Button") as Button;
-        levelMoralBtn = GameObject.Find("LevelMoral Next Button").GetComponent("Button") as Button;
+      //  levelMoral = LevelMoralPanel;
+        levelInfoText = GameObject.Find("Text").GetComponent("Text") as Text;
+    //    levelMoralText = GameObject.Find("LevelMoral Text").GetComponent("Text") as Text;
+        levelInfoBtn = GameObject.Find("Next Button").GetComponent("Button") as Button;
+     //   levelMoralBtn = GameObject.Find("LevelMoral Next Button").GetComponent("Button") as Button;
     }
 	
 	// Update is called once per frame
@@ -63,7 +63,7 @@ public class MessageDisplay : MonoBehaviour {
         if (rotateHidden)
         {
             rotateBoxAnim.SetTrigger("Show");
-            rotateBox.transform.position = new Vector2(Screen.width, 100);
+            //rotateBox.transform.position = new Vector2(Screen.width, 100);
         }
         rotateHidden = false;
     }

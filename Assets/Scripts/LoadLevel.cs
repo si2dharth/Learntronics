@@ -24,40 +24,75 @@ public class LoadLevel : MonoBehaviour
 	public const char resistorC = 'R', batteryC = 'B', lampC = 'L', wireC = '-', wireAC = 'A', wireTC = 'T', brightness = '>';
     public Transform resistor, battery, lamp, wire, wireA, wireT;
     public Pile resPile, batPile, lampPile;
-    public GameObject UIPanel;
-    public DisplayScript infoPanel, moralPanel;
-
+    public DisplayScript infoPanel;
     public static int lampBrightness;
 
 	void Start ()
 	{
-		Load (Levels.Level[0]);
+		Load (0);
         infoPanel.showLevelInfo(Levels.LevelInfo[0]);
-        Common.moralPanel = moralPanel;
+        Common.moralPanel = infoPanel;
 	}
 
 
     public void LoadNextLevel()
     {
-        (GameObject.Find("Next Level Text").GetComponent("Animator") as Animator).Play("Idle");
         if (curLevel == Levels.maxLevels()) return;
         curLevel++;
-        //UIPanel.SetActive(true);
-      //  MessageDisplay.displayMessage("Drag the components from the piles to the corresponding symbols");
         print(curLevel);    
         Common.removeAllObjects();
-        Load(Levels.Level[curLevel-1]);
+        Load(curLevel-1);
+        Common.levelStarted = false;
         infoPanel.showLevelInfo(Levels.LevelInfo[curLevel-1]);
-       // moralPanel.showLevelInfo(Levels.LevelMoral[curLevel]);
+    }
+
+
+    private void Load(int levelNumber)
+    {
+        Common.removeAllWires();
+        Common.readyToConnect = false;
+        Common.tutorialLevel = Levels.tutorials[levelNumber];
+        var wires = GameObject.FindGameObjectsWithTag("WireSymbol");
+        foreach (GameObject wire in wires)
+        {
+            (wire.GetComponent(typeof(Animator)) as Animator).SetTrigger("Show");
+        }
+        ArrayList components = Load(Levels.Level[levelNumber]);
+        string[][] connectionList = readFile(Levels.LevelConnections[levelNumber]);
+        if (Common.tutorialLevel)
+        {
+            for (int i = 0; i < connectionList.Length; i++)
+            {
+                Transform source = components[i] as Transform;
+                for (int j = 0; j < connectionList[i].Length; j++)
+                {
+                    Terminal s = (source.FindChild("Terminals/Terminal" + (j + 1))).GetComponent("Terminal") as Terminal;
+                    string[] connections = Regex.Split(connectionList[i][j], ",");
+                    for (int k = 0; k < connections.Length; k++)
+                    {
+                        Common.numConnections++;
+                        Transform destination = components[int.Parse((connections[k][0]).ToString())] as Transform;
+                        Terminal t = (destination.FindChild("Terminals/Terminal" + connections[k][1])).GetComponent("Terminal") as Terminal;
+                        s.addConnection(t, false);
+                    }
+                }
+            }
+        }
+        else Common.connections = connectionList;
+        Common.numConnections /= 2;
+        //print(Common.numConnections);
     }
 
 	// Use this for initialization
-	void Load (string fileName)
+	ArrayList Load (string fileName)
 	{
+        ArrayList components = new ArrayList();
+        bool addToList = false;
 		string[][] jagged = readFile (fileName);
 		for (int y = 0; y < jagged.Length; y++) {
 			for (int x = 0; x < jagged[y].Length; x++) {
 				Transform t = null;
+                addToList = false;
 				switch (jagged [y] [x][0]) {
 				case wireC:
                     t = wire;
@@ -70,14 +105,17 @@ public class LoadLevel : MonoBehaviour
 					break;
 				case resistorC:
 					t = resistor;
+                    addToList = true;
                     resPile.AddObject();
 					break;
 				case batteryC:
 					t = battery;
+                    addToList = true;
                     batPile.AddObject();
 					break;
 				case lampC:
 					t = lamp;
+                    addToList = true;
                     lampPile.AddObject();
 					break;
                 case brightness:
@@ -90,6 +128,7 @@ public class LoadLevel : MonoBehaviour
 				if (t) {
                     int angle = 90 * (int)(jagged[y][x][1] - '0');
 					Transform o = Instantiate (t, new Vector3 (x - jagged [0].Length / 2, -y + jagged.Length / 2, 0), Quaternion.identity) as Transform;
+                    if (addToList) components.Add(o);
                     o.eulerAngles = new Vector3(0, 0, angle);
                     Symbol.register(o);
                     Common.addObject(o.gameObject);
@@ -97,6 +136,7 @@ public class LoadLevel : MonoBehaviour
 				}
 			}
 		}
+        return components;
 	}
 
 	// Update is called once per frame
