@@ -1,16 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\DisplayScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Levels\Level1.cs">
     <Files>
-      <File FileName="Assets\DisplayScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Resistance.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Battery.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Symbol.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Common.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\TextColorChange.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\MessageDisplay.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\HighLight.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\LoadLevel.cs" Line="1" Column="1" />
-      <File FileName="Assets\Levels\Levels.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Pile.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Levels\Level1.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ElementPile.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\DragHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MyCommon.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

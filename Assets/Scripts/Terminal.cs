@@ -3,135 +3,82 @@ using System.Collections;
 
 public class Terminal : MonoBehaviour {
 
-    private static Terminal terminalUnderMouse = null;
+    bool mouseEnable = false;
+    public Symbol parent;
+    ArrayList connections;
+    public WireGrid wireGrid;
 
-    SpriteRenderer SR;
-    LineRenderer LR;
+    static Terminal currentTerminal = null;
 
-    ArrayList connections = new ArrayList();
-    ArrayList actualConnections = new ArrayList();
-    public bool dragged;
-
-    void Start()
-    {
-        SR = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-        LR = null;
+    void Start() {
+        connections = new ArrayList();
     }
-    void OnMouseEnter()
-    {
-        if (!Common.readyToConnect) return;
-        terminalUnderMouse = this;
-        SR.enabled = true;
-        transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+     public void Enable() {
+         mouseEnable = true;
+    }
+
+    public void Disable() {
+        mouseEnable = false;
+    }
+
+    void OnMouseEnter() {
+        if (!mouseEnable) return;
+        renderer.enabled = true;
+        currentTerminal = this;
     }
 
     void OnMouseExit()
     {
-        if (!Common.readyToConnect) return;
-        SR.enabled = false;
-        if (terminalUnderMouse == this) terminalUnderMouse = null;
-        transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        renderer.enabled = false;
+        if (currentTerminal == this) currentTerminal = null;
     }
 
-    void OnMouseUp()
-    {
-        if (!Common.readyToConnect) return;
-        hideConnections();
-        if (terminalUnderMouse == null || (Common.tutorialLevel && !connections.Contains(terminalUnderMouse)))
-            Common.cancelDragWire();
+
+    float doubleClickStart = 0;
+    void _OnMouseUp() {
+        if ((Time.time - doubleClickStart) < 0.3f) {
+            this.OnMouseDblClick();
+            doubleClickStart = -1;
+            return;
+        }
         else {
-            Common.dragWireTo(terminalUnderMouse.transform.position);
-            Common.confirmDragWire();
-            actualConnections.Add(terminalUnderMouse);
-            connections.Remove(terminalUnderMouse);
-            terminalUnderMouse.connections.Remove(this);
+            doubleClickStart = Time.time;
         }
     }
 
-    void showConnections()
-    {
-        LR = gameObject.GetComponent(typeof(LineRenderer)) as LineRenderer;
-        if (LR == null)
+    Wire currentWire = null;
+
+    void OnMouseDblClick() {
+        
+    }
+
+    void OnMouseDrag() {
+        if (!currentWire) currentWire = Wire.create(this);
+        if (currentTerminal == null)
+            currentWire.Drag(MyCommon.GetMousePosition());
+        else
+            currentWire.Drag(currentTerminal.transform.position);
+    }
+
+    void OnMouseUp() {
+        if (currentTerminal == null || currentTerminal == this) {
+            Wire.destroyCurrent();
+            Levels.currentLevel.connectionFail(1);
+        }
+        else
         {
-            LR = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
-            LR.material = Common.WireLine.material;
-            int i = 0;
-            foreach (Terminal conn in connections)
+            if (parent.CheckConnection(this, currentTerminal) && currentTerminal.parent.CheckConnection(currentTerminal, this))
             {
-                i++;
-                LR.SetVertexCount(i * 2);
-                LR.SetPosition(i * 2 - 2, transform.position + new Vector3(0, 0, -1));
-                LR.SetPosition(i * 2 - 1, conn.transform.position + new Vector3(0, 0, -1));
-                LR.SetWidth(0.05f, 0.05f);
-                conn.SR.enabled = true;
+                WireGrid.addWire(this, currentTerminal);
+                Levels.currentLevel.connectionMade();
+                Wire.confirmCurrent();
+            }
+            else
+            {
+                Wire.destroyCurrent();
+                Levels.currentLevel.connectionFail(2);
             }
         }
-        LR.enabled = true;
-        
-    }
-
-    void hideConnections()
-    {
-        LR = gameObject.GetComponent(typeof(LineRenderer)) as LineRenderer;
-        if (LR == null) return;
-        LR.enabled = false;
-        foreach (Terminal conn in connections)
-        {
-            conn.SR.enabled = false;
-        }
-    }
-
-    public void addConnection(Terminal term, bool show = true)
-    {
-        connections.Add(term);
-        show = false;
-        //if (show)
-        //{
-        //    LineRenderer LR = gameObject.GetComponent(typeof(LineRenderer)) as LineRenderer;
-        //    if (LR == null) LR = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
-        //    LR.SetVertexCount(connections.Count*2);
-        //    LR.SetPosition(connections.Count*2 - 2, transform.position + new Vector3(0, 0, -1));
-        //    LR.SetPosition(connections.Count*2 - 1, term.transform.position + new Vector3(0, 0, -1));
-        //    LR.SetWidth(0.2f, 0.2f);
-        //}
-    }
-
-    public void copyConnections(Terminal term)
-    {
-        foreach (Terminal conn in term.connections)
-        {
-            addConnection(conn);
-        }
-    }
-    void OnMouseDrag()
-    {
-        if (!Common.readyToConnect) return;
-        dragged = true;
-        showConnections();
-        foreach (Terminal conn in connections)
-        {
-            conn.transform.parent.gameObject.SetActive(true);
-        }
-        Common.startDraggingWire(this);
-        Common.dragWireTo(Common.getMousePositionInUnits());
-     //   print("Dragging...");
-    }
-
-    public Transform CheckConnectionWith(string TypeTag)
-    {
-        Terminal foundTerminal = null;
-        foreach (Terminal conn in actualConnections) {
-            if (conn.transform.parent.parent.tag == TypeTag) {
-                foundTerminal = conn;
-                break;
-            }
-        }
-        if (foundTerminal)
-        {
-            actualConnections.Remove(foundTerminal);
-            return foundTerminal.transform.parent.parent;
-        }
-        else return null;
-        
+        currentWire = null;
     }
 }

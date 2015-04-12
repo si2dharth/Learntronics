@@ -1,0 +1,11 @@
+A simple resistor
+
+R1 1 2 10k
+R2 2 0 10k 
+V1 1 0 DC 5
+
+.options noacct
+.TRAN 1ns 2ns
+.PRINT DC V(2,0)
+
+.END

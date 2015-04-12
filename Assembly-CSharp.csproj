@@ -46,18 +46,39 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\DisplayScript.cs" />
-     <Compile Include="Assets\Levels\Levels.cs" />
-     <Compile Include="Assets\Scripts\CircuitComponent.cs" />
-     <Compile Include="Assets\Scripts\Common.cs" />
-     <Compile Include="Assets\Scripts\HighLight.cs" />
-     <Compile Include="Assets\Scripts\LoadLevel.cs" />
-     <Compile Include="Assets\Scripts\MessageDisplay.cs" />
-     <Compile Include="Assets\Scripts\Pile.cs" />
-     <Compile Include="Assets\Scripts\ShowInfo.cs" />
+     <Compile Include="Assets\Scripts\AND.cs" />
+     <Compile Include="Assets\Scripts\Battery.cs" />
+     <Compile Include="Assets\Scripts\CanvasScript.cs" />
+     <Compile Include="Assets\Scripts\Challenge.cs" />
+     <Compile Include="Assets\Scripts\Circuit.cs" />
+     <Compile Include="Assets\Scripts\DisplayScript.cs" />
+     <Compile Include="Assets\Scripts\DragHandler.cs" />
+     <Compile Include="Assets\Scripts\Element.cs" />
+     <Compile Include="Assets\Scripts\ElementPile.cs" />
+     <Compile Include="Assets\Scripts\Lamp.cs" />
+     <Compile Include="Assets\Scripts\Level.cs" />
+     <Compile Include="Assets\Scripts\Levels.cs" />
+     <Compile Include="Assets\Scripts\Levels\Level1.cs" />
+     <Compile Include="Assets\Scripts\Levels\Level2.cs" />
+     <Compile Include="Assets\Scripts\Levels\Level3.cs" />
+     <Compile Include="Assets\Scripts\Levels\Level4.cs" />
+     <Compile Include="Assets\Scripts\Levels\Level5.cs" />
+     <Compile Include="Assets\Scripts\Levels\SandBox.cs" />
+     <Compile Include="Assets\Scripts\Levels\Tutorial1.cs" />
+     <Compile Include="Assets\Scripts\Levels\Tutorial2.cs" />
+     <Compile Include="Assets\Scripts\MyCommon.cs" />
+     <Compile Include="Assets\Scripts\NOT.cs" />
+     <Compile Include="Assets\Scripts\OR.cs" />
+     <Compile Include="Assets\Scripts\Resistance.cs" />
+     <Compile Include="Assets\Scripts\Resistor.cs" />
+     <Compile Include="Assets\Scripts\Switch.cs" />
      <Compile Include="Assets\Scripts\Symbol.cs" />
+     <Compile Include="Assets\Scripts\Symbols.cs" />
      <Compile Include="Assets\Scripts\Terminal.cs" />
-     <Compile Include="Assets\Scripts\TextColorChange.cs" />
+     <Compile Include="Assets\Scripts\Tutorial.cs" />
+     <Compile Include="Assets\Scripts\Wire.cs" />
+     <Compile Include="Assets\Scripts\WireGrid.cs" />
+     <Compile Include="Assets\Scripts\WireHelp.cs" />
      <None Include="Assets\level1.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.2/UnityEngine.UI.dll</HintPath>
